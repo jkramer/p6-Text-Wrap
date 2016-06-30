@@ -1,21 +1,37 @@
-# Text::Wrap
+NAME
+====
 
-Wrap text.
+Text::Wrap - Wrap texts.
 
-```perl6
-print wrap-text(
-  $some-long-text,
+SYNOPSIS
+========
 
-  # Number of characters before wrapping line (default: 80).
-  :width(80),
+    use Text::Wrap;
 
-  # Regex for splitting paragraphs (default: 2 or more consecutive linebreaks).
-  # Use Regex:U if you want to discard paragraphs in the source text.
-  :paragraph(rx/\n ** 2..*/),
+    say wrap-text($some-long-text);
+    say wrap-text($some-long-text, :width(50));
+    say wrap-text($some-long-text, :paragraph(rx/\n/));
+    say wrap-text($text-with-very-long-word, :hard-wrap);
 
-  # Wrap lines in the middle of words, if a single word is longer than the max.
-  # line lenghts (see :width). Default is off, so lines may actually be
-  # longer than the specified length.
-  :hard-wrap,
-);
-```
+DESCRIPTION
+===========
+
+Text::Wrap provides a single function `wrap-text` that takes arbitrary text and wraps it to form paragraphs that fit the given width. There are three optional arguments that modify its behavior.
+
+  * `:width(80)` sets the maximum width of a line. The default is 80 characters. If a single word is longer than this value, a line may become longer than this in order not to wrap the line in the middle of the word. This can be changed with `:hard-break`.
+
+  * `:hard-break` makes `wrap-text` break lines in the middle of words that are longer than the maximum width. It's off by default, meaning that lines may become longer than the maximum width if the text contains words that are too long to fit a line.
+
+  * `:paragraph(rx/\n ** 2..*/)` takes a `Regex` object which is used find paragraphs in the source text in order to retain them in the result. The default is `\n ** 2..*` (two or more consecutive linebreaks). To discard any paragraphs from the source text, you can set this to `Regex:U`.
+
+AUTHOR
+======
+
+Jonas Kramer <jkramer@mark17.net>
+
+COPYRIGHT AND LICENSE
+=====================
+
+Copyright 2016 Jonas Kramer.
+
+This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
