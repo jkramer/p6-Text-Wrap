@@ -2,13 +2,19 @@
 module Text::Wrap {
   sub wrap-text(
     Str $text,
-    Int :$width where * > 0 = 80,
+    Int :$width is copy where * > 0 = 80,
     Regex :$paragraph = rx/\n ** 2..*/,
     Bool :$hard-wrap = False,
+    Str :$prefix = '',
   ) is export {
     my $result = '';
 
-    for ($paragraph.defined ?? $text.split($paragraph) !! [$text]) -> $p {
+    $width -= $prefix.chars;
+
+    my @paragraphs = $paragraph.defined ?? $text.split($paragraph) !! [$text];
+
+    while @paragraphs {
+      my $p = @paragraphs.shift;
       my $line = '';
 
       for $p.words -> $word {
@@ -16,13 +22,13 @@ module Text::Wrap {
             $line ~= $line ?? ' ' ~ $word !! $word;
         }
         else {
-          $result = $result ~ $line ~ "\n";
+          $result ~= $prefix ~ $line ~ "\n";
 
           if $hard-wrap {
             my $copy = $word;
 
             while $copy.chars > $width {
-              $result = $result ~ $copy.substr(0, $width) ~ "\n";
+              $result ~= $prefix ~ $copy.substr(0, $width) ~ "\n";
               $copy.=substr($width);
             }
 
@@ -34,10 +40,12 @@ module Text::Wrap {
         }
       }
 
-      $result ~= $line ?? $line ~ "\n\n" !! "\n";
+      $result ~= $prefix ~ $line if $line;
+      $result ~= "\n" ~ $prefix ~ "\n" if @paragraphs;
     }
 
-    return $result.trim;
+    return $result.trim-leading;
+    # return $result;
   }
 }
 
