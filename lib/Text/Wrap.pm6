@@ -85,6 +85,10 @@ paragraphs in the source text in order to retain them in the result. The
 default is C<<\n ** 2..*>> (two or more consecutive linebreaks). To discard any
 paragraphs from the source text, you can set this to C<<Regex:U>>.
 
+=tem C<<:prefix('')>> takes a string that's inserted in front of every line of
+the wrapped text. The length of the prefix string counts into the total line
+width, meaning it's subtracted from the given C<<:width>>.
+
 =head1 AUTHOR
 
 Jonas Kramer <jkramer@mark17.net>
