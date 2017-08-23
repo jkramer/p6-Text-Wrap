@@ -5,7 +5,7 @@ use lib 'lib';
 
 use Text::Wrap;
 
-plan 2;
+plan 3;
 
 is(
   wrap-text("foo bar baz quux test 123", :width(10)),
@@ -19,11 +19,11 @@ is(
   '-- as prefix'
 );
 
+my $spaces = '-' x 3;
 is(
-  my $spaces = '-' xx 10;
-  wrap-text("foo bar baz quux test 123", :width(10), :prefix( $spaces )),
-  $spaces~"foo bar\n$spaces"~"baz quux\n$spaces"~"test 123",
-  'Spaces as prefix'
+    wrap-text("foo bar baz quux test 123", :width(10), :prefix( $spaces )),
+    $spaces~"foo bar\n"~$spaces~"baz\n"~$spaces~"quux\n"~$spaces~"test\n"~$spaces~"123",
+    'Spaces as prefix'
 );
 
 done-testing;
