@@ -16,7 +16,14 @@ is(
 is(
   wrap-text("foo bar baz quux test 123", :width(10), :prefix('--')),
   "--foo bar\n--baz quux\n--test 123",
-  'no prefix'
+  '-- as prefix'
+);
+
+is(
+  my $spaces = '-' xx 10;
+  wrap-text("foo bar baz quux test 123", :width(10), :prefix( $spaces )),
+  $spaces~"foo bar\n$spaces"~"baz quux\n$spaces"~"test 123",
+  'Spaces as prefix'
 );
 
 done-testing;
