@@ -15,7 +15,7 @@ is(
 
 is(
   wrap-text("foo bar baz quux test 123", :width(10), :postfix('⤶')),
-  "foo bar⤶\nbaz quux⤶\ntest 123⤶",
+  "foo bar⤶\nbaz quux⤶\ntest 123",
   'Postfix ⤶'
 );
 

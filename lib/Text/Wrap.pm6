@@ -44,7 +44,7 @@ module Text::Wrap {
       $result ~= $prefix ~ $line ~ $postfix if $line;
       $result ~= "\n" ~ $prefix ~ "\n" if @paragraphs;
     }
-
+    $result ~~ s/$postfix$//; # Trailing postfix useless
     return $result.trim-leading;
   }
 }
